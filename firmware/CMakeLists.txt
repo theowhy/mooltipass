@@ -21,6 +21,7 @@ include_directories(
 )
 
 option(DEBUG "Build in debug mode" OFF)
+option(GENERATE_MAP_FILES "Generate map files" OFF)
 
 if(DEBUG)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O1 -g")
@@ -41,8 +42,12 @@ macro(info_dump TARGET)
 	)
 endmacro()
 
+macro(map_file_generate TARGET)
+	set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-Wl,-Map=${TARGET}.map")
+endmacro()
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto -fuse-linker-plugin -Wall -mmcu=atmega32u4 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Werror -std=gnu99 -mcall-prologues -fno-inline-small-functions -mrelax -MD -MP")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-linker-plugin -Wl,--gc-sections -mrelax -Wl,--start-group -Wl,-lm -Wl,--end-group -Wl,-Map=mooltipass.map")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-linker-plugin -Wl,--gc-sections -mrelax -Wl,--start-group -Wl,-lm -Wl,--end-group")
 
 add_definitions(-DF_CPU=16000000UL -DF_USB=16000000UL -DNDEBUG)
 add_executable(mooltipass_bootloader
@@ -52,6 +57,9 @@ add_executable(mooltipass_bootloader
 	src/AES/aes256_ctr.c
 	src/AES/aes.c
 )
+if(GENERATE_MAP_FILES)
+	map_file_generate(mooltipass_bootloader)
+endif()
 info_dump(mooltipass_bootloader)
 
 add_executable(mooltipass
@@ -103,5 +111,9 @@ add_executable(mooltipass
 	src/MINI/mini_leds.c
 	src/MINI/mini_inputs.c
 )
+
+if(GENERATE_MAP_FILES)
+	map_file_generate(mooltipass)
+endif()
 
 info_dump(mooltipass)
