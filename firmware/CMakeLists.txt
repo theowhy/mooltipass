@@ -50,6 +50,18 @@ macro(map_file_generate TARGET)
 	set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-Wl,-Map=${TARGET}.map")
 endmacro()
 
+macro(target_flash TARGET)
+	add_custom_target(${TARGET}-flash
+		COMMAND avrdude -p ${MCU} -U flash:w:$<TARGET_FILE:${TARGET}>:i
+	)
+
+	add_custom_target(${TARGET}-load
+		COMMAND  dfu-programmer ${MCU} erase
+		COMMAND  dfu-programmer ${MCU} flash $<TARGET_FILE:${TARGET}>
+		COMMAND  dfu-programmer ${MCU} start
+	)
+endmacro()
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto -fuse-linker-plugin -Wall -mmcu=${MCU} -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Werror -std=gnu99 -mcall-prologues -fno-inline-small-functions -mrelax -MD -MP")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-linker-plugin -Wl,--gc-sections -mrelax -Wl,--start-group -Wl,-lm -Wl,--end-group")
 
@@ -65,6 +77,7 @@ if(GENERATE_MAP_FILES)
 	map_file_generate(mooltipass_bootloader)
 endif()
 info_dump(mooltipass_bootloader)
+target_flash(mooltipass_bootloader)
 
 add_executable(mooltipass
 	src/mooltipass.c
@@ -121,3 +134,10 @@ if(GENERATE_MAP_FILES)
 endif()
 
 info_dump(mooltipass)
+target_flash(mooltipass)
+
+add_custom_target(fuses
+	COMMAND avrdude -p ${MCU} -U lfuse:w:0xff:m
+	COMMAND avrdude -p ${MCU} -U hfuse:w:0xd9:m
+	COMMAND avrdude -p ${MCU} -U efuse:w:0xfb:m
+)
