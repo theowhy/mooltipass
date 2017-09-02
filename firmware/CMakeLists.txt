@@ -22,6 +22,7 @@ include_directories(
 
 option(DEBUG "Build in debug mode" OFF)
 option(GENERATE_MAP_FILES "Generate map files" OFF)
+set(MCU "atmega32u4" CACHE STRING "Target host MCU")
 
 if(DEBUG)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O1 -g2 -Wa,-g")
@@ -41,7 +42,7 @@ macro(info_dump TARGET)
 	)
 	add_custom_command(TARGET ${TARGET}
 		POST_BUILD
-		COMMAND avr-size  --format=avr --mcu=atmega32u4 $<TARGET_FILE:${TARGET}>
+		COMMAND avr-size  --format=avr --mcu=${MCU} $<TARGET_FILE:${TARGET}>
 	)
 endmacro()
 
@@ -49,7 +50,7 @@ macro(map_file_generate TARGET)
 	set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-Wl,-Map=${TARGET}.map")
 endmacro()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto -fuse-linker-plugin -Wall -mmcu=atmega32u4 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Werror -std=gnu99 -mcall-prologues -fno-inline-small-functions -mrelax -MD -MP")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto -fuse-linker-plugin -Wall -mmcu=${MCU} -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Werror -std=gnu99 -mcall-prologues -fno-inline-small-functions -mrelax -MD -MP")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-linker-plugin -Wl,--gc-sections -mrelax -Wl,--start-group -Wl,-lm -Wl,--end-group")
 
 add_definitions(-DF_CPU=16000000UL -DF_USB=16000000UL)
