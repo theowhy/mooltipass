@@ -33,8 +33,10 @@ endif()
 macro(info_dump TARGET)
 	add_custom_command(TARGET ${TARGET}
 		POST_BUILD
-		COMMAND avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $<TARGET_FILE:${TARGET}> $<TARGET_FILE_NAME:${TARGET}>.hex
-		COMMAND avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 --no-change-warnings -O ihex $<TARGET_FILE:${TARGET}> $<TARGET_FILE_NAME:${TARGET}>.eep
+		COMMAND avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $<TARGET_FILE:${TARGET}> ${TARGET}.hex
+		COMMAND avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 --no-change-warnings -O ihex $<TARGET_FILE:${TARGET}> ${TARGET}.eep
+		BYPRODUCTS ${TARGET}.hex ${TARGET}.eep
+
 	)
 	add_custom_command(TARGET ${TARGET}
 		POST_BUILD
