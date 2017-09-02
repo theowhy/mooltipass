@@ -1,6 +1,3 @@
 [submodule "fonts/fontbuilder"]
 	path = resources/fonts/fontbuilder
 	url = https://github.com/andryblack/fontbuilder.git
-[submodule "source_code/dmbs"]
-	path = source_code/dmbs
-	url = https://github.com/abcminiuser/dmbs.git
