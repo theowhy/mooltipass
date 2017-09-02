@@ -20,7 +20,7 @@ include_directories(
 	/usr/avr/include
 )
 
-option(DEBUG "Build in debug mode")
+option(DEBUG "Build in debug mode" OFF)
 
 if(DEBUG)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O1 -g")
