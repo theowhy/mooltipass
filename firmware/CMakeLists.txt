@@ -49,7 +49,7 @@ endmacro()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -flto -fuse-linker-plugin -Wall -mmcu=atmega32u4 -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -Werror -std=gnu99 -mcall-prologues -fno-inline-small-functions -mrelax -MD -MP")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fuse-linker-plugin -Wl,--gc-sections -mrelax -Wl,--start-group -Wl,-lm -Wl,--end-group")
 
-add_definitions(-DF_CPU=16000000UL -DF_USB=16000000UL -DNDEBUG)
+add_definitions(-DF_CPU=16000000UL -DF_USB=16000000UL)
 add_executable(mooltipass_bootloader
 	src/bootloader_main.c
 	src/FLASH/flash_mem.c
