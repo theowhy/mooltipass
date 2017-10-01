@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 #
 # Copyright (c) 2016 Mathieu Stpehan
 # All rights reserved.
@@ -21,13 +21,18 @@
 # information: Portions Copyright [yyyy] [name of copyright owner]
 #
 # CDDL HEADER END
-from optparse import OptionParser
+import argparse
 from array import array
 from PIL import Image
 from struct import *
 import random
 import time
 import sys
+import os
+import logging
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 USB_VID					= 0x16D0
 USB_PID					= 0x09A0
@@ -46,47 +51,50 @@ NODE_SIZE				= 132
 CMD_PING				= 0xA1
 CMD_MINI_FRAME_BUF_DATA = 0x9E
 
-parser = OptionParser(usage = 'usage: %prog [options]')
-parser.add_option('-i', '--input', help='image to send to the screen', dest='input', default=None)
-parser.add_option('-r', '--reverse', help='set to inverse pixel data', action="store_true", dest='reverse', default=False)
-(options, args) = parser.parse_args()
 
-if options.input == None:
-	parser.error('input option is required')
-	
+parser = argparse.ArgumentParser(description="Convert png images to binary format suitable for mooltipass")
+parser.add_argument("input", help="Input files")
+parser.add_argument('-o', '--output', help='converted image', dest='output', default=None)
+parser.add_argument('-r', '--reverse', help='set to inverse pixel data', action="store_true", default=False)
+parser.add_argument("-q", "--quiet", action="store_true", help="Only ouptut errors")
+args = parser.parse_args()
+
+if args.quiet:
+	logger.setLevel(logging.ERROR)
+
 def main():
-		
+
 	# Open image and convert it to monochrome
-	image = Image.open(options.input)
-	image = image.convert(mode="RGB", colors=1)	
-	
+	image = Image.open(args.input)
+	image = image.convert(mode="RGB", colors=1)
+
 	# Get image specs
 	img_format = image.format
 	img_size = image.size
 	img_mode = image.mode
-	print "Format:", img_format, "size:", img_size, "mode:", img_mode
-	
+	logger.info("Format: {}, size: {}, mode {}".format(img_format, img_size, img_mode))
+
 	# Check size
 	if img_size[0] > 128 or img_size[1] > 32:
-		print "Wrong dimensions or format!"
+		logger.error("Wrong dimensions or format!")
 		sys.exit(0)
-		
-	# Compute size	
-	dataSize = img_size[0] * ((img_size[1]+7) / 8)
-	print "Total data size:", dataSize, "bytes"
-		
+
+	# Compute size
+	dataSize = img_size[0] * int(((img_size[1]+7) / 8))
+	logger.info("Total data size: {} bytes".format(dataSize))
+
 	# Turn image left 90 degrees
 	image_rot = image.transpose(Image.ROTATE_270)
 	#image_rot.save("lapin.jpg", "JPEG")
 	#print image_rot.size[0]
 	#print image_rot.size[1]
-	
+
 	# Process the pixels
 	pixel_data = 0
 	bitCount = 7
 	bitstream = []
 	for y in range(0, image_rot.size[1]):
-		for page in range(0, (image_rot.size[0]+7)/8):
+		for page in range(0, int((image_rot.size[0]+7)/8)):
 			bitCount = 7
 			pixel_data = 0
 			for x in range(page*8, page*8 + 8):
@@ -96,7 +104,7 @@ def main():
 				else:
 					rgb = image_rot.getpixel((x, y))
 				# Update pixel data
-				if options.reverse:
+				if args.reverse:
 					if rgb[0] < 128:
 						pixel_data |= 1 << bitCount
 				else:
@@ -109,19 +117,28 @@ def main():
 					bitCount = 7
 			if bitCount != 7:
 				bitstream.append(pixel_data)
-			
-	#print bitstream
-	
+	logger.debug("bitstream: {}".format(bitstream))
+
 	# Open file to write
-	fd = open(options.input.split('.')[0]+".img", 'wb');
+	filename = None
+	if args.output:
+		filename = args.output
+	else:
+		filename, file_extension = os.path.splitext(args.input)
+		filename += ".img"
+
+	fd = open(filename, 'wb');
 
 	# Write header
 	fd.write(pack('=HBBBH', img_size[0], img_size[1], 1, 0, dataSize))
 	# Write data
 	fd.write(pack('<{}B'.format(len(bitstream)), *bitstream))
 	fd.close()
-	
-	print "File written"
+
+	logger.info("Data written to {}".format(filename))
 
 if __name__ == "__main__":
-	main()
+	try:
+		main()
+	except Exception as e:
+		logger.exception("{}: {}".format(e, e))
