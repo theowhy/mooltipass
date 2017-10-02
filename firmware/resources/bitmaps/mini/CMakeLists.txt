@@ -120,6 +120,32 @@ firmware_bundle(mini
 		mini/12_login_left_pane.png
 		mini/13_zzz.png
 		mini/14_mini_update.png
+		${CMAKE_CURRENT_SOURCE_DIR}/15_space_filler.img
+		${CMAKE_CURRENT_SOURCE_DIR}/16_space_filler.img
+		${CMAKE_CURRENT_SOURCE_DIR}/17_space_filler.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/18_EN_US_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/19_FR_FR_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/20_ES_ES_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/21_DE_DE_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/22_ES_AR_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/23_EN_AU_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/24_FR_BE_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/25_PO_BR_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/26_EN_CA_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/27_CZ_CZ_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/28_DA_DK_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/29_FI_FI_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/30_HU_HU_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/31_IS_IS_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/32_IT_IT_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/33_NL_NL_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/34_NO_NO_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/35_PO_PO_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/36_MAC_UK_keyb_lut.img
+#		${CMAKE_CURRENT_SOURCE_DIR}/lut/36_RO_RO_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/37_SL_SL_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/38_FRDE_CH_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/39_EN_UK_keyb_lut.img
 		mini/40_lock_full.png
 		mini/41_lock_empty.png
 		mini/42_pac_full.png
@@ -131,6 +157,14 @@ firmware_bundle(mini
 		mini/48_pac_left2.png
 		mini/49_pac_up.png
 		mini/50_pac_up2.png
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/51_CZ_QWERTY_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/52_EN_DV_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/53_FR_MAC_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/54_FR_CH_MAC_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/55_DE_CH_MAC_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/56_DE_MAC_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/lut/57_US_MAC_keyb_lut.img
+		${CMAKE_CURRENT_SOURCE_DIR}/58_space_filler.img
 		mini/59_tutorial_1.png
 		mini/60_tutorial_2.png
 		mini/61_tutorial_3.png
@@ -168,4 +202,6 @@ firmware_bundle(mini
 		mini/93_settings_erase_t1.png
 		mini/94_settings_erase_t2.png
 		mini/95_settings_erase_t3.png
-}
+		${CMAKE_CURRENT_SOURCE_DIR}/96_space_filler.img
+
+)
