@@ -1,2 +1,5 @@
-windows: pip install pywinusb
-macos: pip install cython / pip install numpy / pip install hidapi
+#windows: pip install pywinusb
+#macos: pip install cython / pip install numpy / pip install hidapi
+hidapi
+numpy
+cython
