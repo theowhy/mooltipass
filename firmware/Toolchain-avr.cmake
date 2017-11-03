@@ -1,17 +1,13 @@
 # this one is important
-SET(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_NAME Generic)
 #this one not so much
-SET(CMAKE_SYSTEM_VERSION 1)
+set(CMAKE_SYSTEM_VERSION 1)
 
 # specify the cross compiler
-SET(CMAKE_C_COMPILER   /usr/bin/avr-gcc)
-SET(CMAKE_CXX_COMPILER /usr/bin/avr-g++)
+set(CMAKE_C_COMPILER   /usr/bin/avr-gcc)
+set(CMAKE_CXX_COMPILER /usr/bin/avr-g++)
 
-# where is the target environment
-#SET(CMAKE_FIND_ROOT_PATH  /opt/eldk-2007-01-19/ppc_74xx /home/alex/eldk-ppc74xx-inst)
-
-# search for programs in the build host directories
-SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
-# for libraries and headers in the target directories
-SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
-SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+# disable search for programs on host
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)

@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 
+#message(STATUS ${CMAKE_TOOLCHAIN_FILE})
+#foreach(FLAVOR IN ITEMS "standard" "mini")
+#	message(STATUS "${FLAVOR}")
+#	add_subdirectory(resources/bitmaps/${FLAVOR})
+#endforeach()
+
 include_directories(
 	src
 	src/GUI
@@ -35,6 +41,7 @@ endif()
 macro(info_dump TARGET)
 	add_custom_command(TARGET ${TARGET}
 		POST_BUILD
+		COMMENT "AVR information for ${TARGET}"
 		COMMAND avr-objcopy -O ihex -R .eeprom -R .fuse -R .lock -R .signature $<TARGET_FILE:${TARGET}> ${TARGET}.hex
 		COMMAND avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 --no-change-warnings -O ihex $<TARGET_FILE:${TARGET}> ${TARGET}.eep
 		BYPRODUCTS ${TARGET}.hex ${TARGET}.eep
@@ -141,3 +148,5 @@ add_custom_target(fuses
 	COMMAND avrdude -p ${MCU} -U hfuse:w:0xd9:m
 	COMMAND avrdude -p ${MCU} -U efuse:w:0xfb:m
 )
+
+add_subdirectory(resources)
